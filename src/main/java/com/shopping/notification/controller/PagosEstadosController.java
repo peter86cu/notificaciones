@@ -90,7 +90,7 @@ public class PagosEstadosController {
 						noti= new Notification();
 
 					}else {
-						noti.setResponse("No se actualizo la Orden "+ response.getOrdenPago() + " con estado "+ response.getOrdenPago().getState() +" - con el estado: "+ validar.getPagoValido().getStatus());
+						noti.setResponse("No se actualizo la Orden "+ response.getOrdenPago().getOrder_id() + " con estado "+ response.getOrdenPago().getState() +" - con el estado: "+ validar.getPagoValido().getStatus());
 						noti.setResultado(respuesta.getResultado());
 						service.guardarLog(noti);
 						noti= new Notification();
