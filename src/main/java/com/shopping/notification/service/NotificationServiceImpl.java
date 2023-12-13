@@ -39,7 +39,7 @@ public class NotificationServiceImpl implements NotificationService {
 	private String dlogGo;
 	private String auterizacion;
 
-	private boolean desarrollo = true;
+	private boolean desarrollo = false;
 
 	void cargarServer() throws IOException {
 		Properties p = new Properties();

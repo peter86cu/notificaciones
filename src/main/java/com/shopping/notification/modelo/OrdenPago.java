@@ -7,6 +7,7 @@ public class OrdenPago {
 	private int monto;
 	private int iva;
 	private String fecha_pago;
+	private String monedapago;
 	private String state;
 	private String idusuario;
 	private String idcart;
@@ -67,6 +68,12 @@ public class OrdenPago {
 	}
 	public void setIva(int iva) {
 		this.iva = iva;
+	}
+	public String getMonedapago() {
+		return monedapago;
+	}
+	public void setMonedapago(String monedapago) {
+		this.monedapago = monedapago;
 	}
 	
 	

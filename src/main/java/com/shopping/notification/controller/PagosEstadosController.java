@@ -54,24 +54,54 @@ public class PagosEstadosController {
 	    noti.setId(UUID.randomUUID().toString());
 	    noti.setRequest(value);
 		ResponseOrdenPago response= service.obtenerOrdenPagoId(payment);
-		noti.setResponse(ow.writeValueAsString(noti));
+		noti.setResponse(ow.writeValueAsString(response));
 		noti.setAccion("obtenerOrdenPagoId");
 		noti.setFecha_fin(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
 		service.guardarLog(noti);
+		noti=new Notification();
 		if(response.isStatus()) {
+			noti.setId(UUID.randomUUID().toString());
+			noti.setClass_id(this.getClass().getName());
+			noti.setFecha_inicio(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
+			noti.setRequest(value);
+			noti.setAccion("consultarPago");
 			ResponseValidarPago validar= service.consultarPago(value);
 			if(validar.isStatus()) {
 				//Actualizo el estado
 				if(!validar.getPagoValido().getStatus().equalsIgnoreCase(response.getOrdenPago().getState())) {
-					OrdenPago orden= response.getOrdenPago();
+					noti.setResultado("VALIDACION-> "+ validar.getPagoValido().getStatus()+" < > "+response.getOrdenPago().getState());
+					OrdenPago orden= response.getOrdenPago();//response.getOrdenPago();					
 					orden.setState(validar.getPagoValido().getStatus());
 					orden.setRedirect_url(validar.getPagoValido().getRedirect_url());
+					noti.setResponse(ow.writeValueAsString(orden));
 					ResponseResultado respuesta= service.actualizarOrdenPago(orden);
+					noti.setFecha_fin(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
+					service.guardarLog(noti);
+					noti= new Notification();
+					noti.setId(UUID.randomUUID().toString());
+					noti.setFecha_inicio(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
+					noti.setClass_id(this.getClass().getName());
 					if(respuesta.isStatus()) {
+						noti.setResponse("Orden "+ response.getOrdenPago() + " con estado "+ response.getOrdenPago().getState() +" - actualizada con estado: "+ validar.getPagoValido().getStatus());
 						//Guardo log en la base
 						Logger.getLogger(PagosEstadosController.class.getName()).log(Level.INFO, (String) null, orden);
+						noti.setResultado(respuesta.getResultado());
+						service.guardarLog(noti);
+						noti= new Notification();
+
+					}else {
+						noti.setResponse("No se actualizo la Orden "+ response.getOrdenPago() + " con estado "+ response.getOrdenPago().getState() +" - con el estado: "+ validar.getPagoValido().getStatus());
+						noti.setResultado(respuesta.getResultado());
+						service.guardarLog(noti);
+						noti= new Notification();
 
 					}
+				}else {
+					noti.setResultado("VALIDACION-> "+ validar.getPagoValido().getStatus()+" = "+response.getOrdenPago().getState());
+					noti.setResponse(ow.writeValueAsString(validar));
+					noti.setFecha_fin(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
+					service.guardarLog(noti);
+					noti= new Notification();
 				}
 			}
 		}
