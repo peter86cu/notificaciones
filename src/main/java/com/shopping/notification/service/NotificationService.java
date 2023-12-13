@@ -1,5 +1,6 @@
 package com.shopping.notification.service;
 
+import com.ayalait.logguerclass.Notification;
 import com.shopping.notification.modelo.OrdenPago;
 import com.shopping.notification.vo.RequestObtenerOrden;
 import com.shopping.notification.vo.ResponseOrdenPago;
@@ -13,5 +14,7 @@ public interface NotificationService {
 	ResponseValidarPago consultarPago(String payId);
 	
 	ResponseResultado actualizarOrdenPago(OrdenPago orden);
+	
+	String guardarLog(Notification noti);
 	
 }

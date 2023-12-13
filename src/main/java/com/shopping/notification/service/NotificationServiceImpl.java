@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 
 import org.springframework.stereotype.Service;
 
+import com.ayalait.logguerclass.Notification;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -34,10 +35,11 @@ import com.shopping.notification.vo.ValidarPagoResponse;
 public class NotificationServiceImpl implements NotificationService {
 
 	public String stock;
+	public String logger;
 	private String dlogGo;
 	private String auterizacion;
 
-	private boolean desarrollo = false;
+	private boolean desarrollo = true;
 
 	void cargarServer() throws IOException {
 		Properties p = new Properties();
@@ -53,6 +55,7 @@ public class NotificationServiceImpl implements NotificationService {
 				this.stock = p.getProperty("server.stock");
 				this.dlogGo= p.getProperty("server.dlocalgo");
 				this.auterizacion= p.getProperty("server.token");
+				this.logger=p.getProperty("server.logger");
 
 			}
 		} catch (FileNotFoundException var3) {
@@ -65,6 +68,7 @@ public class NotificationServiceImpl implements NotificationService {
 		try {
 			if (desarrollo) {
 				stock = "http://localhost:8082";
+				logger = "http://localhost:8086";
 				dlogGo="https://api-sbx.dlocalgo.com/v1/payments/";
 				auterizacion="ICxxdYAWmYGMxBqBHYxwvEJotcExWHUZ:qKRLqfsYE1LZHS2PvPFPjZM5XUY8HT5Aj11UHUAD";
 			} else {
@@ -239,6 +243,52 @@ public class NotificationServiceImpl implements NotificationService {
 				responseOP.setStatus(false);
 				responseOP.setResultado(var16.getMessage());
 				return responseOP;
+			}
+
+			return responseOP;
+		} finally {
+			if (response != null) {
+				response.close();
+			}
+
+			if (cliente != null) {
+				cliente.close();
+			}
+
+		}
+	}
+
+	@Override
+	public String guardarLog(Notification noti) {
+		Response response = null;
+		Client cliente = ClientBuilder.newClient();
+		String responseJson = "";
+		String responseOP ="";
+
+		try {
+			try {
+				WebTarget webTarjet = cliente.target(this.logger + "/notification");
+				Builder invoker = webTarjet.request(new String[] { "application/json" });
+				ObjectWriter ow = (new ObjectMapper()).writer().withDefaultPrettyPrinter();
+
+				try {
+					String json = ow.writeValueAsString(noti);
+					response = (Response) invoker.put(Entity.entity(json, "application/json"), Response.class);
+					responseJson = (String) response.readEntity(String.class);
+				} catch (JsonProcessingException var17) {
+					Logger.getLogger(ResponseOrdenPago.class.getName()).log(Level.SEVERE, (String) null, var17);
+				}
+
+					
+					responseOP=responseJson;
+				
+					return responseOP;
+
+				
+			} catch (JsonSyntaxException var15) {
+				System.err.println(var15);
+			} catch (ProcessingException var16) {
+				System.err.println(var16);
 			}
 
 			return responseOP;
