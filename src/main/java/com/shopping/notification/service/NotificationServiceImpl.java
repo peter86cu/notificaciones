@@ -162,7 +162,7 @@ public class NotificationServiceImpl implements NotificationService {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "Bearer " + auterizacion);
 		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-		ResponseEntity<ValidarPagoResponse> response= restTemplate.exchange(this.dlogGo, HttpMethod.GET, requestEntity, ValidarPagoResponse.class, payId);
+		ResponseEntity<ValidarPagoResponse> response= restTemplate.exchange(this.dlogGo+payId, HttpMethod.GET, requestEntity, ValidarPagoResponse.class, payId);
 		
 		if(response!=null) {
 			responseOrder.setStatus(true);
