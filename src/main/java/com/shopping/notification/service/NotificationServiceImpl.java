@@ -5,18 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.client.Invocation.Builder;
-import javax.ws.rs.core.Response;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.ayalait.logguerclass.Notification;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -40,6 +36,9 @@ public class NotificationServiceImpl implements NotificationService {
 	private String auterizacion;
 
 	private boolean desarrollo = false;
+	
+	@Autowired
+	RestTemplate restTemplate;
 
 	void cargarServer() throws IOException {
 		Properties p = new Properties();
@@ -82,14 +81,32 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	public ResponseOrdenPago obtenerOrdenPagoId(RequestObtenerOrden payment_id) {
-		Response response = null;
+		/*Response response = null;
 		Client cliente = ClientBuilder.newClient();
-		String responseJson = "";
+		String responseJson = "";*/
 		ResponseOrdenPago responseOP = new ResponseOrdenPago();
 
-		try {
-			try {
-				WebTarget webTarjet = cliente.target(this.stock+"/shopping/orden/obtener");
+		HttpHeaders headers = new HttpHeaders();
+		String url = this.stock+"/shopping/orden/obtener";
+		//headers.put(result, null)
+		HttpEntity<RequestObtenerOrden> request = new HttpEntity<>(payment_id, headers);
+
+		String response = restTemplate.postForObject(url, request, String.class);
+		System.out.println(response);
+				
+				
+				  
+				//String value = (String) restTemplate.postForObject(uri, payment_id, String.class, new Object[0]);
+
+				if(response!="") {
+					responseOP.setStatus(true);
+					OrdenPago data = (new Gson()).fromJson(response, OrdenPago.class);
+					responseOP.setOrdenPago(data);
+					return responseOP;
+				}
+				  
+				  
+				/*WebTarget webTarjet = cliente.target(this.stock+"/shopping/orden/obtener");
 				Builder invoker = webTarjet.request(new String[] { "application/json" });
 				ObjectWriter ow = (new ObjectMapper()).writer().withDefaultPrettyPrinter();
 
@@ -130,24 +147,30 @@ public class NotificationServiceImpl implements NotificationService {
 				responseOP.setStatus(false);
 				responseOP.setResultado(var16.getMessage());
 				return responseOP;
-			}
+			}*/
 
 			return responseOP;
-		} finally {
-			if (response != null) {
-				response.close();
-			}
-
-			if (cliente != null) {
-				cliente.close();
-			}
-
-		}
+		
+		
 	}
 
 	@Override
 	public ResponseValidarPago consultarPago(String payId) {
-		Response response = null;
+		
+		ResponseValidarPago responseOrder = new ResponseValidarPago();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "Bearer " + auterizacion);
+		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+		ResponseEntity<ValidarPagoResponse> response= restTemplate.exchange(this.dlogGo, HttpMethod.GET, requestEntity, ValidarPagoResponse.class, payId);
+		
+		if(response!=null) {
+			responseOrder.setStatus(true);
+			responseOrder.setPagoValido(response.getBody());
+			return responseOrder;
+		}
+		return responseOrder;
+		/*Response response = null;
 		Client cliente = ClientBuilder.newClient();
 		String responseJson = "";
 		ResponseValidarPago responseOrder = new ResponseValidarPago();
@@ -191,12 +214,26 @@ public class NotificationServiceImpl implements NotificationService {
 				cliente.close();
 			}
 
-		}
+		}*/
 	}
 
 	@Override
 	public ResponseResultado actualizarOrdenPago(OrdenPago orden) {
-		Response response = null;
+		ResponseResultado responseOP = new ResponseResultado();
+		HttpHeaders headers = new HttpHeaders();
+		String url = this.stock + "/shopping/orden/crear";
+		
+		HttpEntity<OrdenPago> request = new HttpEntity<>(orden, headers);
+
+		String response = restTemplate.postForObject(url, request, String.class);
+		if(response!="") {
+			responseOP.setStatus(true);
+			responseOP.setResultado(response);
+			return responseOP;
+		}
+		return responseOP;
+		
+		/*Response response = null;
 		Client cliente = ClientBuilder.newClient();
 		String responseJson = "";
 		ResponseResultado responseOP = new ResponseResultado();
@@ -255,12 +292,23 @@ public class NotificationServiceImpl implements NotificationService {
 				cliente.close();
 			}
 
-		}
+		}*/
 	}
 
 	@Override
 	public String guardarLog(Notification noti) {
-		Response response = null;
+		HttpHeaders headers = new HttpHeaders();
+		String url = this.logger + "/notification";
+		String responseOP ="";
+		HttpEntity<Notification> request = new HttpEntity<>(noti, headers);
+
+		String response = restTemplate.postForObject(url, request, String.class);
+		if(response!="") {
+			return response;
+		}
+		return responseOP;
+		
+		/*Response response = null;
 		Client cliente = ClientBuilder.newClient();
 		String responseJson = "";
 		String responseOP ="";
@@ -301,7 +349,7 @@ public class NotificationServiceImpl implements NotificationService {
 				cliente.close();
 			}
 
-		}
+		}*/
 	}
 
 }
