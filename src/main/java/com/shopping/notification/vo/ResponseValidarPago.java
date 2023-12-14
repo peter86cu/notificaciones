@@ -9,6 +9,7 @@ public class ResponseValidarPago {
 	private int code;
 	private ValidarPagoResponse pagoValido;
 	private String respuesta;
+	private ErrorState error;
 	public boolean isStatus() {
 		return status;
 	}
@@ -33,6 +34,13 @@ public class ResponseValidarPago {
 	public void setRespuesta(String respuesta) {
 		this.respuesta = respuesta;
 	}
+	public ErrorState getError() {
+		return error;
+	}
+	public void setError(ErrorState error) {
+		this.error = error;
+	}
+	
 	
 	
 	

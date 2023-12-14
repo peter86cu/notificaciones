@@ -15,6 +15,6 @@ public interface NotificationService {
 	
 	ResponseResultado actualizarOrdenPago(OrdenPago orden);
 	
-	String guardarLog(Notification noti);
+	ResponseResultado guardarLog(Notification noti);
 	
 }

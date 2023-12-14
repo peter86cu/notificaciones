@@ -8,6 +8,8 @@ public class ResponseOrdenPago {
 	private boolean status;
 	private OrdenPago ordenPago;
 	private String resultado;
+	private ErrorState error;
+	
 	public int getCode() {
 		return code;
 	}
@@ -32,6 +34,12 @@ public class ResponseOrdenPago {
 	}
 	public void setResultado(String resultado) {
 		this.resultado = resultado;
+	}
+	public ErrorState getError() {
+		return error;
+	}
+	public void setError(ErrorState error) {
+		this.error = error;
 	}
 	
 

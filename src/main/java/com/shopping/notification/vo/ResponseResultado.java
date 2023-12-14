@@ -15,6 +15,7 @@ public class ResponseResultado {
 	private int code;
 	private String resultado;
 	private String temporal;
+	private ErrorState error;
 
 	public String getResultado() {
 		return resultado;
@@ -46,5 +47,13 @@ public class ResponseResultado {
 
 	public void setTemporal(String temporal) {
 		this.temporal = temporal;
+	}
+
+	public ErrorState getError() {
+		return error;
+	}
+
+	public void setError(ErrorState error) {
+		this.error = error;
 	}
 }
