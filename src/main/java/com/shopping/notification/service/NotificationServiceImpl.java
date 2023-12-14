@@ -92,7 +92,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 			HttpEntity<RequestObtenerOrden> requestEntity = new HttpEntity<>(payment_id, headers);
 			noti.setFecha_inicio(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
-			noti.setClass_id(this.getClass().getName());
+			noti.setClass_id("notification-API");
 			noti.setRequest(ow.writeValueAsString(requestEntity));
 			noti.setAccion("obtenerOrdenPagoId");	
 			noti.setId(UUID.randomUUID().toString());
@@ -145,7 +145,7 @@ public class NotificationServiceImpl implements NotificationService {
 			headers.set("Authorization", "Bearer " + auterizacion);
 			HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 			noti.setFecha_inicio(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
-			noti.setClass_id(this.getClass().getName());
+			noti.setClass_id("notification-API");
 			noti.setRequest(ow.writeValueAsString(requestEntity));
 			noti.setAccion("consultarPago");	
 			noti.setId(UUID.randomUUID().toString());
@@ -198,7 +198,7 @@ public class NotificationServiceImpl implements NotificationService {
 			HttpEntity<OrdenPago> requestEntity = new HttpEntity<>(orden, headers);
 			
 			noti.setFecha_inicio(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
-			noti.setClass_id(this.getClass().getName());
+			noti.setClass_id("notification-API");
 			noti.setRequest(ow.writeValueAsString(requestEntity));
 			noti.setAccion("actualizarOrdenPago");	
 			noti.setId(UUID.randomUUID().toString());

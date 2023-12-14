@@ -65,9 +65,10 @@ public class PagosEstadosController {
 					Notification noti= new Notification();
 					noti.setId(UUID.randomUUID().toString());
 					noti.setFecha_inicio(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
-					noti.setClass_id(this.getClass().getName());
-					noti.setAccion("Valida status");
+					noti.setClass_id("notification-API");
+					
 					if(respuesta.isStatus()) {
+						noti.setAccion("Actualizada orden "+ response.getOrdenPago().getOrder_id());
 						noti.setResponse("Orden "+ response.getOrdenPago().getIdpago() + " con estado "+ response.getOrdenPago().getState() +" - actualizada con estado: "+ validar.getPagoValido().getStatus());
 						//Guardo log en la base
 						Logger.getLogger(PagosEstadosController.class.getName()).log(Level.INFO, (String) null, orden);
@@ -78,8 +79,10 @@ public class PagosEstadosController {
 						}
 
 					}else {
+						noti.setAccion("No Actualizada orden "+ response.getOrdenPago().getOrder_id());
 						noti.setResponse("No se actualizo la Orden "+ response.getOrdenPago().getOrder_id() + " con estado "+ response.getOrdenPago().getState() +" - con el estado: "+ validar.getPagoValido().getStatus());
 						noti.setResultado(respuesta.getResultado());
+						noti.setFecha_fin(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
 						ResponseResultado result = service.guardarLog(noti);
 						if(!result.isStatus()) {
 							System.err.println(result.getError().getCode() +" "+ result.getError().getMenssage());
@@ -87,6 +90,21 @@ public class PagosEstadosController {
 
 					}
 					
+				}else {
+					Notification noti= new Notification();
+					noti.setId(UUID.randomUUID().toString());
+					noti.setFecha_inicio(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
+					noti.setClass_id("notification-API");
+					noti.setAccion("Actualiar orden "+response.getOrdenPago().getOrder_id());
+					noti.setRequest("Estado Orden a actualizar API d-localgo "+validar.getPagoValido().getStatus());
+					noti.setResponse("Estado orden a actualizar Multi-Shop "+ response.getOrdenPago().getState());
+					noti.setFecha_fin(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
+					noti.setResultado("No se pudo actualizar la orden de pago "+ response.getOrdenPago().getOrder_id());
+					ResponseResultado result = service.guardarLog(noti);
+					if(!result.isStatus()) {
+						System.err.println(result.getError().getCode() +" "+ result.getError().getMenssage());
+					}
+
 				}
 			}
 		}
