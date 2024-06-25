@@ -18,4 +18,6 @@ public class NotificationApplication {
 		return new RestTemplate();
 
 	}
+	
+	
 }
