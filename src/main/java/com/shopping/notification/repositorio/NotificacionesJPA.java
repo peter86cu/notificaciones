@@ -11,7 +11,7 @@ public interface NotificacionesJPA extends JpaRepository<Notificaciones, Integer
 
 	 List<Notificaciones> findByUserid(String idUsuario);
 	 
-	 @Query(value="SELECT COUNT(*) as cantidad, notificaciones.* FROM notificaciones WHERE userid =:idUsuario GROUP BY tipo, notificacion ,userid,estado, clase", nativeQuery=true)
+	 @Query(value="SELECT COUNT(*) as cantidad, notificaciones.* FROM notificaciones WHERE userid =:idUsuario GROUP BY id,tipo, notificacion ,userid,estado, clase", nativeQuery=true)
 	 List<Object> findByUseridHTML(String idUsuario);
 	
 }

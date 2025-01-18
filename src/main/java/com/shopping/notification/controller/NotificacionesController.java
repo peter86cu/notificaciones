@@ -25,7 +25,7 @@ import com.shopping.notification.service.NotificaGestion;
 
 
 @RestController
-@RequestMapping("/api/v1/notification")
+//@RequestMapping("/api/v1/notification")
 public class NotificacionesController {
 	
 	@Autowired

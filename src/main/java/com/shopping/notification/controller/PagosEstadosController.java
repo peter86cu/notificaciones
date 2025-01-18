@@ -32,7 +32,7 @@ import com.shopping.notification.vo.ResponseResultado;
 import com.shopping.notification.vo.ResponseValidarPago;
 
 @RestController
-@RequestMapping("/api/v1/notification-pagos")
+//@RequestMapping("/api/v1/notification-pagos")
 public class PagosEstadosController {
 	
 	@Autowired
@@ -93,7 +93,7 @@ public class PagosEstadosController {
 					}
 					
 				}else {
-					Notification noti= new Notification();
+					/*Notification noti= new Notification();
 					noti.setId(UUID.randomUUID().toString());
 					noti.setFecha_inicio(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
 					noti.setClass_id("notification-API");
@@ -105,7 +105,7 @@ public class PagosEstadosController {
 					ResponseResultado result = service.guardarLog(noti);
 					if(!result.isStatus()) {
 						System.err.println(result.getError().getCode() +" "+ result.getError().getMenssage());
-					}
+					}*/
 
 				}
 			}

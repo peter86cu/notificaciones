@@ -91,11 +91,7 @@ public class NotificationServiceImpl implements NotificationService {
 			String url = this.stock + "/shopping/orden/obtener/";
 
 			HttpEntity<RequestObtenerOrden> requestEntity = new HttpEntity<>(payment_id, headers);
-			noti.setFecha_inicio(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
-			noti.setClass_id("notification-API");
-			noti.setRequest(ow.writeValueAsString(requestEntity));
-			noti.setAccion("obtenerOrdenPagoId");	
-			noti.setId(UUID.randomUUID().toString());
+			
 			ResponseEntity<OrdenPago> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity,
 					OrdenPago.class, new Object[0]);
 
@@ -123,11 +119,11 @@ public class NotificationServiceImpl implements NotificationService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		noti.setFecha_fin(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
+		/*noti.setFecha_fin(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
 		ResponseResultado result= guardarLog(noti);
 		if(!result.isStatus()) {
 			System.err.println(result.getError().getCode() +" "+ result.getError().getMenssage());
-		}
+		}*/
 
 		return responseOP;
 
@@ -144,11 +140,11 @@ public class NotificationServiceImpl implements NotificationService {
 			HttpHeaders headers = new HttpHeaders();
 			headers.set("Authorization", "Bearer " + auterizacion);
 			HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-			noti.setFecha_inicio(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
+			/*noti.setFecha_inicio(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
 			noti.setClass_id("notification-API");
 			noti.setRequest(ow.writeValueAsString(requestEntity));
 			noti.setAccion("consultarPago");	
-			noti.setId(UUID.randomUUID().toString());
+			noti.setId(UUID.randomUUID().toString());*/
 			
 			ResponseEntity<ValidarPagoResponse> response = restTemplate.exchange(this.dlogGo + payId, HttpMethod.GET,
 					requestEntity, ValidarPagoResponse.class, payId);
@@ -177,11 +173,11 @@ public class NotificationServiceImpl implements NotificationService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		noti.setFecha_fin(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
+		/*noti.setFecha_fin(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
 		ResponseResultado result= guardarLog(noti);
 		if(!result.isStatus()) {
 			System.err.println(result.getError().getCode() +" "+ result.getError().getMenssage());
-		}
+		}*/
 		return responseOrder;
 
 	}
