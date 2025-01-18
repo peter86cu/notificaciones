@@ -75,20 +75,20 @@ public class PagosEstadosController {
 						//Guardo log en la base
 						Logger.getLogger(PagosEstadosController.class.getName()).log(Level.INFO, (String) null, orden);
 						noti.setResultado(respuesta.getResultado());
-						ResponseResultado result= service.guardarLog(noti);
+						/*ResponseResultado result= service.guardarLog(noti);
 						if(!result.isStatus()) {
 							System.err.println(result.getError().getCode() +" "+ result.getError().getMenssage());
-						}
+						}*/
 
 					}else {
-						noti.setAccion("No Actualizada orden "+ response.getOrdenPago().getOrder_id());
+						/*noti.setAccion("No Actualizada orden "+ response.getOrdenPago().getOrder_id());
 						noti.setResponse("No se actualizo la Orden "+ response.getOrdenPago().getOrder_id() + " con estado "+ response.getOrdenPago().getState() +" - con el estado: "+ validar.getPagoValido().getStatus());
 						noti.setResultado(respuesta.getResultado());
 						noti.setFecha_fin(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
 						ResponseResultado result = service.guardarLog(noti);
 						if(!result.isStatus()) {
 							System.err.println(result.getError().getCode() +" "+ result.getError().getMenssage());
-						}
+						}*/
 
 					}
 					

@@ -193,11 +193,11 @@ public class NotificationServiceImpl implements NotificationService {
 
 			HttpEntity<OrdenPago> requestEntity = new HttpEntity<>(orden, headers);
 			
-			noti.setFecha_inicio(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
+			/*noti.setFecha_inicio(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
 			noti.setClass_id("notification-API");
 			noti.setRequest(ow.writeValueAsString(requestEntity));
 			noti.setAccion("actualizarOrdenPago");	
-			noti.setId(UUID.randomUUID().toString());
+			noti.setId(UUID.randomUUID().toString());*/
 			
 			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity,
 					String.class, new Object[0]);
@@ -227,11 +227,11 @@ public class NotificationServiceImpl implements NotificationService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		noti.setFecha_fin(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
+		/*noti.setFecha_fin(FormatearFechas.obtenerFechaPorFormato("yyyy-MM-dd hh:mm:ss"));
 		ResponseResultado result= guardarLog(noti);
 		if(!result.isStatus()) {
 			System.err.println(result.getError().getCode() +" "+ result.getError().getMenssage());
-		}
+		}*/
 		
 		return responseOP;
 
